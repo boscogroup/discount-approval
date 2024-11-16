@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Discount Approval Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Custom Styles -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Font Awesome for Icons -->
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Price Discount Approval Form</h1>
+        <form id="approvalForm">
+            <div id="stage1">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="requestedBy">Requested By:</label>
+                        <input type="text" class="form-control" id="requestedBy" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="preparedBy">Prepared By:</label>
+                        <input type="text" class="form-control" id="preparedBy" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="creditCustomer">CREDIT CUSTOMER:</label>
+                        <input type="text" class="form-control" id="creditCustomer" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="branch">BRANCH:</label>
+                        <input type="text" class="form-control" id="branch" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="customer">CUSTOMER:</label>
+                        <input type="text" class="form-control" id="customer" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="date">Date:</label>
+                        <input type="date" class="form-control" id="date" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="refNo">Ref. No:</label>
+                        <input type="text" class="form-control" id="refNo" required>
+                    </div>
+                </div>
+
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>SL No</th>
+                            <th>Item Code</th>
+                            <th>Item Description</th>
+                            <th>Length</th>
+                            <th>Unit</th>
+                            <th>Qty</th>
+                            <th>Kg/Mtr</th>
+                            <th>Kg/Bar</th>
+                            <th>Total Wt.</th>
+                            <th>Selling Price</th>
+                            <th>Requested Selling Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemTable">
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" class="form-control itemCode" required></td>
+                            <td><input type="text" class="form-control itemDesc" required></td>
+                            <td><input type="number" class="form-control length"></td>
+                            <td><input type="text" class="form-control unit"></td>
+                            <td><input type="number" class="form-control qty" onchange="calculateTotalWeight(this)"></td>
+                            <td><input type="number" class="form-control kgMtr" onchange="calculateTotalWeight(this)"></td>
+                            <td><input type="number" class="form-control kgBar"></td>
+                            <td><input type="number" class="form-control totalWeight" readonly></td>
+                            <td><input type="number" class="form-control sellingPrice"></td>
+                            <td><input type="number" class="form-control requestedPrice"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="addRow()">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+                <button type="button" class="btn btn-success mt-3" onclick="submitStage1()">Request</button>
+            </div>
+
+            <div id="stage2" style="display:none;">
+                <h3 class="mt-4">Stage 2 - Review and Approval</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="requestedByStage2">Requested By:</label>
+                        <input type="text" class="form-control" id="requestedByStage2" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="preparedByStage2">Prepared By:</label>
+                        <input type="text" class="form-control" id="preparedByStage2" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="creditCustomerStage2">CREDIT CUSTOMER:</label>
+                        <input type="text" class="form-control" id="creditCustomerStage2" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="branchStage2">BRANCH:</label>
+                        <input type="text" class="form-control" id="branchStage2" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="customerStage2">CUSTOMER:</label>
+                        <input type="text" class="form-control" id="customerStage2" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="dateStage2">Date:</label>
+                        <input type="date" class="form-control" id="dateStage2" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="refNoStage2">Ref. No:</label>
+                        <input type="text" class="form-control" id="refNoStage2" readonly>
+                    </div>
+                </div>
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>SL No</th>
+                            <th>Item Code</th>
+                            <th>Item Description</th>
+                            <th>Length</th>
+                            <th>Unit</th>
+                            <th>Qty</th>
+                            <th>Kg/Mtr</th>
+                            <th>Kg/Bar</th>
+                            <th>Total Wt.</th>
+                            <th>Selling Price</th>
+                            <th>Requested Selling Price</th>
+                            <th>COST</th>
+                            <th>GP %</th>
+                            <th>Invoice Discount Amount</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemTableStage2">
+                        <!-- Rows will be populated dynamically in JavaScript -->
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success mt-3" onclick="submitStage2()">Approve and Submit</button>
+
+            </div>
+
+            <!-- Additional details below the form -->
+            <div class="mt-4">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="salesExecutive">Sales Executive:</label>
+                        <input type="text" class="form-control" id="salesExecutive">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="creditPeriod">CREDIT PERIOD (Days):</label>
+                        <input type="number" class="form-control" id="creditPeriod">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="outstandingMonth">Outstanding Month:</label>
+                        <input type="month" class="form-control" id="outstandingMonth">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="outstandingAmount">Outstanding Amount:</label>
+                        <input type="number" class="form-control" id="outstandingAmount">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="invNo">Inv No:</label>
+                        <input type="text" class="form-control" id="invNo">
+                    </div>
+                </div>
+                <div>
+                    <strong>Note:</strong>
+                    <p>Request should not be sent by the branch in case the credit documents are:</p>
+                    <ol>
+                        <li>Expired, invalid, or incomplete.</li>
+                        <li>Has return cheques or a recent history of return cheques (last 6 months) or holding cheques.</li>
+                        <li>Has outstanding payments not collected via PDC for more than 60 days.</li>
+                    </ol>
+                </div>
+            </div>
+        </form>
+
+        <div id="output" class="mt-3"></div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
